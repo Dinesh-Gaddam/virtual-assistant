@@ -2,10 +2,27 @@ import re
 import pandas as pd
 from pathlib import Path, PureWindowsPath
 
-file_path = Path(r"D:\Dinesh\Tech\GitHub\virtual-assistant\images\American\resized_images\men\Men_Tags")  # Change this to your actual file path
+file_path = Path(r"C:\Users\likit\virtual-assistant\images\American\resized_images\women\Women_Tags")  # Change this to your actual file path
 
 data = []
 current = {}
+
+def save_to_cosmos(user_id, image_name, caption, confidence, tags):
+    blob_url = f"{BLOB_BASE_URL}/{user_id}/{image_name}{SAS_TOKEN}"
+    item = {
+        "id": f"{user_id}_{image_name}_{uuid4()}",
+        "user_id": user_id,
+        "image_url": blob_url,
+        "caption": caption,
+        "confidence_score": confidence,
+        "tags": tags,
+        "created_at": datetime.utcnow().isoformat()
+    }
+    try:
+        container.upsert_item(item)
+        logger.info(f"Uploaded {item['id']}")
+    except Exception as e:
+        logger.error(f"Error saving {item['id']}: {e}")
 
 def extract_confidence(text):
     match = re.search(r"\(Confidence:\s*([0-9.]+)\)", text)
@@ -48,7 +65,7 @@ for entry in data:
         tag: conf for tag, conf in zip(entry["Tags"], entry["TagConfidences"])
     }
     entry["ImageName"] = PureWindowsPath(entry["ImagePath"]).name
-
+ 
 # Create DataFrame
 df = pd.DataFrame(data)
 print(df[["ImageName", "Caption", "CaptionConfidence", "Tags", "TagConfidenceMap"]])
