@@ -2,11 +2,16 @@ import re
 import pandas as pd
 from pathlib import Path, PureWindowsPath
 
+<<<<<<< HEAD
 file_path = Path(r"C:\Users\likit\virtual-assistant\images\American\resized_images\women\Women_Tags")  # Change this to your actual file path
+=======
+file_path = Path(r"D:\Dinesh\Tech\GitHub\virtual-assistant\images\American\resized_images\men\Men_Tags")  # Change this to your actual file path
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
 
 data = []
 current = {}
 
+<<<<<<< HEAD
 def save_to_cosmos(user_id, image_name, caption, confidence, tags):
     blob_url = f"{BLOB_BASE_URL}/{user_id}/{image_name}{SAS_TOKEN}"
     item = {
@@ -24,6 +29,8 @@ def save_to_cosmos(user_id, image_name, caption, confidence, tags):
     except Exception as e:
         logger.error(f"Error saving {item['id']}: {e}")
 
+=======
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
 def extract_confidence(text):
     match = re.search(r"\(Confidence:\s*([0-9.]+)\)", text)
     return float(match.group(1)) if match else None
@@ -65,7 +72,11 @@ for entry in data:
         tag: conf for tag, conf in zip(entry["Tags"], entry["TagConfidences"])
     }
     entry["ImageName"] = PureWindowsPath(entry["ImagePath"]).name
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
 # Create DataFrame
 df = pd.DataFrame(data)
 print(df[["ImageName", "Caption", "CaptionConfidence", "Tags", "TagConfidenceMap"]])

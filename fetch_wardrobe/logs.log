@@ -1561,6 +1561,7 @@ Response headers:
     'x-ms-cosmos-internal-partition-id': 'REDACTED'
     'x-ms-gatewayversion': 'REDACTED'
     'Date': 'Wed, 18 Jun 2025 18:32:48 GMT'
+<<<<<<< HEAD
 2025-06-19 00:28:38,079 - INFO - Request URL: 'https://likithasusi.documents.azure.com:443/'
 Request method: 'GET'
 Request headers:
@@ -4699,3 +4700,5 @@ Response headers:
     'Strict-Transport-Security': 'REDACTED'
     'x-ms-gatewayversion': 'REDACTED'
     'Date': 'Tue, 24 Jun 2025 01:20:11 GMT'
+=======
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6

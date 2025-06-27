@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import os
 import re
 import traceback
@@ -15,6 +16,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Logging setup
+=======
+import logging
+from fastapi import FastAPI, HTTPException
+from azure.cosmos import CosmosClient
+from azure.storage.blob import (
+    BlobServiceClient,
+    generate_blob_sas,
+    BlobSasPermissions
+)
+from dotenv import load_dotenv
+from datetime import datetime, timedelta
+import os
+
+# Setup logging
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -23,19 +39,36 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+<<<<<<< HEAD
 logger = logging.getLogger(_name_)
 
 # Azure configuration
+=======
+logger = logging.getLogger(__name__)
+
+# Load environment variables
+load_dotenv()
+
+# Azure config
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
 COSMOS_URI = os.getenv("COSMOS_URI")
 COSMOS_KEY = os.getenv("COSMOS_KEY")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 BLOB_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STRING")
 
+<<<<<<< HEAD
 # Clients
+=======
+# FastAPI App
+app = FastAPI()
+
+# Cosmos DB clients
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
 cosmos_client = CosmosClient(COSMOS_URI, credential=COSMOS_KEY)
 db = cosmos_client.get_database_client(DATABASE_NAME)
 user_container = db.get_container_client("users")
 wardrobe_container = db.get_container_client("wardrobe")
+<<<<<<< HEAD
 promoted_queries_container = db.get_container_client("promotedQueries")
 blob_service = BlobServiceClient.from_connection_string(BLOB_CONNECTION_STRING)
 
@@ -43,6 +76,13 @@ blob_service = BlobServiceClient.from_connection_string(BLOB_CONNECTION_STRING)
 app = FastAPI()
 
 # SAS URL generator
+=======
+
+# Blob client
+blob_service = BlobServiceClient.from_connection_string(BLOB_CONNECTION_STRING)
+
+# Generate SAS URL for a blob
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
 def generate_sas_url(container_name: str, blob_name: str) -> str:
     sas_token = generate_blob_sas(
         account_name=blob_service.account_name,
@@ -54,7 +94,11 @@ def generate_sas_url(container_name: str, blob_name: str) -> str:
     )
     return f"https://{blob_service.account_name}.blob.core.windows.net/{container_name}/{blob_name}?{sas_token}"
 
+<<<<<<< HEAD
 # Get user by name
+=======
+# Find user by name
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
 def get_user_by_name(first_name: str, last_name: str):
     query = f"""
     SELECT * FROM users u 
@@ -64,9 +108,18 @@ def get_user_by_name(first_name: str, last_name: str):
     results = list(user_container.query_items(query=query, enable_cross_partition_query=True))
     return results[0] if results else None
 
+<<<<<<< HEAD
 @app.get("/profile/{first_name}/{last_name}")
 async def get_user_profile(first_name: str, last_name: str):
     logger.info(f"➡ Request received for user: {first_name} {last_name}")
+=======
+# Endpoint: Get wardrobe data for user
+@app.get("/profile/{first_name}/{last_name}")
+async def get_user_profile(first_name: str, last_name: str):
+    logger.info(f"➡️ Request received for user: {first_name} {last_name}")
+
+    # Step 1: Find user
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
     user = get_user_by_name(first_name, last_name)
     if not user:
         logger.warning(f"❌ User not found: {first_name} {last_name}")
@@ -75,7 +128,12 @@ async def get_user_profile(first_name: str, last_name: str):
     user_id = user["id"]
     logger.info(f"✅ Found user_id: {user_id}")
 
+<<<<<<< HEAD
     query = """
+=======
+    # Step 2: Fetch wardrobe entries for this user
+    query = f"""
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
     SELECT c.image_id, c.image_url, c.tags FROM wardrobe c 
     WHERE c.user_id = @user_id
     """
@@ -85,7 +143,12 @@ async def get_user_profile(first_name: str, last_name: str):
         enable_cross_partition_query=True
     ))
 
+<<<<<<< HEAD
     return {
+=======
+    # Step 3: Format response
+    response_payload = {
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
         "user_id": user_id,
         "full_name": f"{user['first name']} {user['last name']}",
         "gender": user.get("gender", "Unspecified"),
@@ -94,6 +157,7 @@ async def get_user_profile(first_name: str, last_name: str):
         "wardrobe": results
     }
 
+<<<<<<< HEAD
 @app.get("/recommendation/{user_id}")
 def get_recommendation(user_id: str, query: str = Query(..., description="Clothing request")):
     try:
@@ -156,3 +220,7 @@ def get_recommendation(user_id: str, query: str = Query(..., description="Clothi
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+=======
+    logger.info(f"✅ Responding with {len(results)} wardrobe items for {user_id}")
+    return response_payload
+>>>>>>> 62de66664f6184027c959efb493cb4ad79f21ab6
