@@ -1,0 +1,16 @@
+# .gitignore
+# Node / React Native
+node_modules/
+*.log
+
+# iOS / Android builds
+ios/build/
+android/app/build/
+*.keystore
+
+# .NET
+bin/
+obj/
+.vscode/
+*.user
+*.suo
