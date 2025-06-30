@@ -10,13 +10,22 @@ from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPerm
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from recommender_engine import RecommenderEngine
+from logging.handlers import TimedRotatingFileHandler
 
 # Load environment variables
 load_dotenv()
 
+# Create logs directory if not exists
+os.makedirs("logs", exist_ok=True)
+
 # Setup logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("recommendation_logger")
+logger.setLevel(logging.INFO)
+handler = TimedRotatingFileHandler("logs/server.log", when="midnight", interval=1, backupCount=7)
+handler.suffix = "%Y-%m-%d"
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 # Azure config
 COSMOS_URI = os.getenv("COSMOS_URI")
@@ -26,7 +35,6 @@ BLOB_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STRING")
 STORAGE_ACCOUNT_NAME = os.getenv("STORAGE_ACCOUNT_NAME")
 STORAGE_ACCOUNT_KEY = os.getenv("STORAGE_ACCOUNT_KEY")
 BLOB_BASE_URL = f"https://{STORAGE_ACCOUNT_NAME}.blob.core.windows.net"
-
 
 # Clients
 cosmos_client = CosmosClient(COSMOS_URI, credential=COSMOS_KEY)
@@ -38,16 +46,17 @@ blob_service = BlobServiceClient.from_connection_string(BLOB_CONNECTION_STRING)
 
 app = FastAPI()
 
-def generate_sas_url(container_name: str, blob_name: str) -> str:
+def generate_sas_url(user_id, image_name):
+    expiry_time = datetime.utcnow() + timedelta(days=1)
     sas_token = generate_blob_sas(
-        account_name=blob_service.account_name,
-        container_name=container_name,
-        blob_name=blob_name,
-        account_key=blob_service.credential.account_key,
+        account_name=STORAGE_ACCOUNT_NAME,
+        container_name=user_id,
+        blob_name=image_name,
+        account_key=STORAGE_ACCOUNT_KEY,
         permission=BlobSasPermissions(read=True),
-        expiry=datetime.utcnow() + timedelta(minutes=60)
+        expiry=expiry_time
     )
-    return f"https://{blob_service.account_name}.blob.core.windows.net/{container_name}/{blob_name}?{sas_token}"
+    return f"{BLOB_BASE_URL}/{user_id}/{image_name}?{sas_token}"
 
 def get_user_by_id(user_id: str):
     try:
@@ -64,6 +73,7 @@ async def get_user_profile(first_name: str, last_name: str):
     """
     results = list(user_container.query_items(query=query, enable_cross_partition_query=True))
     if not results:
+        logger.warning(f"User not found: {first_name} {last_name}")
         raise HTTPException(status_code=404, detail="User not found")
     user = results[0]
     user_id = user["id"]
@@ -75,8 +85,10 @@ async def get_user_profile(first_name: str, last_name: str):
             generate_sas_url(user_id, blob.name) for blob in blobs
         ]
     except Exception as e:
-        logger.error(f"❌ Error accessing blob storage: {e}")
+        logger.error(f"❌ Error accessing blob storage for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Error accessing blob storage")
+
+    logger.info(f"Profile fetched for user: {first_name} {last_name} (user_id: {user_id})")
 
     return {
         "user_id": user_id,
@@ -86,23 +98,15 @@ async def get_user_profile(first_name: str, last_name: str):
         "total_images": len(image_urls),
         "images": image_urls
     }
-def generate_sas_url(user_id, image_name):
-    expiry_time = datetime.utcnow() + timedelta(days=1)
-    sas_token = generate_blob_sas(
-        account_name=STORAGE_ACCOUNT_NAME,
-        container_name=user_id,
-        blob_name=image_name,
-        account_key=STORAGE_ACCOUNT_KEY,
-        permission=BlobSasPermissions(read=True),
-        expiry=expiry_time
-    )
-    return f"{BLOB_BASE_URL}/{user_id}/{image_name}?{sas_token}"
 
 @app.get("/recommendation/{user_id}")
 def get_recommendation(user_id: str, query: str = Query(..., description="Clothing request")):
     try:
+        logger.info(f"[QUERY]  User: {user_id}, Query: '{query}'")
+
         user = get_user_by_id(user_id)
         if not user:
+            logger.error(f"[ERROR] User not found: {user_id}")
             raise HTTPException(status_code=404, detail="User not found")
 
         wardrobe_items = list(wardrobe_container.query_items(
@@ -111,64 +115,51 @@ def get_recommendation(user_id: str, query: str = Query(..., description="Clothi
             enable_cross_partition_query=True
         ))
         if not wardrobe_items:
+            logger.error(f"[ERROR] No wardrobe items found for user: {user_id}")
             raise HTTPException(status_code=404, detail="No wardrobe items found")
 
-        # Step 1: Build DataFrame
-        df = pd.DataFrame([
-            {
-                "ImageName": item["id"].split("_", 1)[-1],
-                "Caption": item.get("caption", ""),
-                "Tags": [list(t.keys())[0] for t in item.get("tags", [])],
-                "ImageURL": item["image_url"]
-            }
-            for item in wardrobe_items
-        ])
-        #logger.info(df["ImageName"])
+        df = pd.DataFrame([{
+            "ImageName": item["id"].split("_", 1)[-1],
+            "Caption": item.get("caption", ""),
+            "Tags": [list(t.keys())[0] for t in item.get("tags", [])],
+            "ImageURL": item["image_url"]
+        } for item in wardrobe_items])
+
         engine = RecommenderEngine("imageconfig.json")
         engine.df = df
         recommendation_text = engine.get_dress_recommendation(query)
-        logger.info(recommendation_text)
+
         if "Your query does not appear to be related to fashion" in recommendation_text:
+            logger.info(f"[RESPONSE] Not fashion-related: {recommendation_text.strip()}")
             return recommendation_text
+
+        logger.info(f"[RESPONSE] Recommendation generated:\n{recommendation_text.strip()}")
+
         lines = recommendation_text.strip().splitlines()[1:]
-
-        
-# Store the results
         results = []
-
         for line in lines:
-            # Skip blank lines
             if not line.strip() or ":" not in line:
                 continue
-    
-        # Extract item inside ** **
-            #match = re.search(r"\*\*(.*?)\*\*", line)
             match = re.search(r"\*\*(?:.*?\b)?([FM]_\d+)\b.*?\*\*", line)
             item = match.group(1) if match else None
-            #print(item)
-            logger.info(item)
-            # Extract description after the first colon
-            #desc = line.split(":", 1)[1].strip() if ":" in line else ""
             desc = line
             if item:
                 results.append({"item": item, "description": desc})
-        
-        response_collection = []
-        response_collection_description = []
-        for r in results:
-            url = df[df["ImageName"]==r["item"]]["ImageURL"].iloc[0]
-        
-        #re.search(rf"{re.escape(r["item"])}\.(jpg|png)", url)
-            url_match = re.search(rf"{re.escape(r["item"])}\.(jpg|png)", url)
-            image_id = url_match.group(0)
-            image_url = generate_sas_url(user_id,image_id)
-            #print(image_url)
-            logger.info(image_url)
-            response_collection.append(image_url)
-            response_collection_description.append({"image_url": image_url, "description": r["description"]})
 
-        return response_collection_description
+        response_collection = []
+        for r in results:
+            url = df[df["ImageName"] == r["item"]]["ImageURL"].iloc[0]
+            url_match = re.search(rf"{re.escape(r['item'])}\.(jpg|png)", url)
+            image_id = url_match.group(0)
+            image_url = generate_sas_url(user_id, image_id)
+            response_collection.append({
+                "image_url": image_url,
+                "description": r["description"]
+            })
+
+        return response_collection
 
     except Exception as e:
-        traceback.print_exc()
+        logger.error(f"[ERROR] Failed recommendation for user {user_id}: {str(e)}")
+        logger.exception(e)
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
