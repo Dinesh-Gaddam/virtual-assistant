@@ -1,0 +1,27 @@
+2025-07-05 16:30:55,809 - INFO - [QUERY]  User: user2, Query: 'suggest me an outfit for dinner'
+2025-07-05 16:31:03,757 - INFO - [RESPONSE] Recommendation generated:
+2025-07-05 16:31:03,757 - INFO - These selections balance between formal and smart casual, depending on the dinner's setting.
+2025-07-05 16:32:56,263 - INFO - [QUERY]  User: user2, Query: 'casual'
+2025-07-05 16:33:01,103 - INFO - [RESPONSE] Recommendation generated:
+2025-07-05 16:33:01,103 - INFO - 3. **M_23**: A green shirt with blue jeans is a classic casual combination.
+2025-07-05 16:35:08,478 - INFO - [QUERY]  User: user1, Query: 'gala dress'
+2025-07-05 16:35:13,293 - INFO - [RESPONSE] Recommendation generated:
+For a gala event, here are the top 3 most suitable dress items from your wardrobe:
+
+1. **Item: F_10** - A woman in a red dress. Tags: gala, red dress.
+2. **Item: F_2** - A woman in a white dress. Tags: high heels, formal dress, white dress.
+3. **Item: F_16** - A woman in a beige dress. Tags: high heels, formal dress, day dress, pattern (fashion design).
+2025-07-05 16:37:51,402 - INFO - [QUERY]  User: user1, Query: 'gala dress'
+2025-07-05 16:37:56,219 - INFO - [RESPONSE] Recommendation generated:
+1. **Item: F_10** - A woman in a red dress. Tags: gala, red dress.
+2. **Item: F_2** - A woman in a white dress. Tags: high heels, formal dress, white dress.
+3. **Item: F_16** - A woman in a beige dress. Tags: high heels, formal dress, day dress, pattern (fashion design).
+2025-07-05 16:56:07,155 - INFO - [QUERY]  User: user1, Query: 'party dress'
+2025-07-05 16:56:14,372 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 party dress recommendations from your wardrobe:
+
+1. **Item: F_1** - A blue cocktail dress with high heels. Perfect for a party with its vibrant color and stylish design.
+
+2. **Item: F_10** - A red gala dress. Ideal for a more formal party setting, adding elegance and sophistication.
+
+3. **Item: F_17** - A red cocktail sheath dress. This option offers a mix of style and comfort, suitable for a lively party atmosphere.

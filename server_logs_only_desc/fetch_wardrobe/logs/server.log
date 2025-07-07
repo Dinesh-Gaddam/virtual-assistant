@@ -1,0 +1,94 @@
+2025-07-07 21:30:19,695 - INFO - [QUERY]  User: user1, Query: 'gala dress'
+2025-07-07 21:30:27,240 - INFO - [RESPONSE] Recommendation generated:
+1. **F_10**: Red Gala Dress - Perfectly tagged for gala events.
+2. **F_2**: White Formal Dress - Elegant choice for a gala.
+3. **F_15**: Grey Formal Dress - Sophisticated option suitable for formal occasions.
+2025-07-07 21:30:51,254 - INFO - [QUERY]  User: user2, Query: 'casual dress'
+2025-07-07 21:30:55,975 - INFO - [RESPONSE] Recommendation generated:
+Based on your query for a casual dress, here are the top 3 most suitable items from your wardrobe:
+
+1. **Item: M_22** - A man in white shirt and white pants standing in front of a mirror (Tags: casual dress).
+
+2. **Item: M_4** - A man standing with his hands in his pockets (Tags: casual dress, trousers, shirt).
+
+3. **Item: M_23** - A man in a green shirt and blue jeans (Tags: casual dress, denim).
+2025-07-07 21:31:14,810 - INFO - [QUERY]  User: user2, Query: 'party '
+2025-07-07 21:31:19,937 - INFO - [RESPONSE] Recommendation generated:
+For a party, here are the top 3 recommendations from your wardrobe:
+
+1. **M_9**: A suit and tie - Perfect for a formal party setting.
+   
+2. **M_5**: A suit with a necktie - Offers a classic and sophisticated look.
+
+3. **M_15**: A beige jacket with jeans - Great for a smart-casual party atmosphere.
+2025-07-07 21:35:23,421 - INFO - [QUERY]  User: user1, Query: 'party'
+2025-07-07 21:35:29,084 - INFO - [RESPONSE] Recommendation generated:
+For a party, here are the top 3 dress recommendations:
+
+1. **Item: F_1** - A woman in a blue cocktail dress with high heels. Perfect for a fun and stylish party look.
+
+2. **Item: F_14** - A blue dress suitable for cocktail events, casual yet trendy and great for a lively atmosphere.
+
+3. **Item: F_17** - A red cocktail dress, offering a bold and elegant choice that stands out at any party.
+2025-07-07 21:36:48,861 - INFO - [QUERY]  User: user1, Query: 'party'
+2025-07-07 21:36:55,764 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 dress recommendations for a party:
+
+1. **Item: F_1** - A blue cocktail dress with high heels. Perfect for a party with an elegant vibe.
+   
+2. **Item: F_10** - A red dress suitable for a gala. A striking choice for standing out at a party.
+
+3. **Item: F_17** - A red cocktail sheath dress. Great for a sophisticated party look.
+2025-07-07 21:37:05,743 - INFO - [QUERY]  User: user1, Query: 'casual'
+2025-07-07 21:37:10,457 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 most suitable casual dress items:
+
+1. **Item: F_5** - White shirt and blue jeans: Perfect for a relaxed casual look with street fashion vibes.
+   
+2. **Item: F_13** - Brown polka dot dress: A casual dress option with a playful pattern.
+
+3. **Item: F_3** - Blue day dress: Ideal for casual outings with a patterned design and comfortable fit.
+2025-07-07 21:37:19,301 - INFO - [QUERY]  User: user1, Query: 'gala'
+2025-07-07 21:37:24,592 - INFO - [RESPONSE] Recommendation generated:
+For a gala, here are the top 3 most suitable dress items from your wardrobe:
+
+1. **Item: F_10** - A red dress specifically tagged for a gala.
+2. **Item: F_2** - A white formal dress, perfect for an elegant gala appearance.
+3. **Item: F_16** - A beige formal dress with high heels, suitable for a sophisticated event.
+2025-07-07 21:37:33,177 - INFO - [QUERY]  User: user1, Query: 'dinner'
+2025-07-07 21:37:37,400 - INFO - [RESPONSE] Recommendation generated:
+For a dinner occasion, here are the top 3 recommendations from your wardrobe:
+
+1. **F_1**: Blue Cocktail Dress - Perfect for a stylish dinner with high heels.
+2. **F_13**: Brown Polka Dot Dress - A suitable choice for a more casual dinner setting.
+3. **F_17**: Red Cocktail Sheath Dress - Ideal for a slightly more formal dinner.
+2025-07-07 21:39:08,028 - INFO - [QUERY]  User: user1, Query: 'gala'
+2025-07-07 21:39:13,560 - INFO - [RESPONSE] Recommendation generated:
+For a gala, here are the top 3 most suitable dress items from your wardrobe:
+
+1. **F_10** - A woman in a red dress (Tags: gala, red dress)
+2. **F_2** - A woman in a white dress (Tags: high heels, formal dress, white dress)
+3. **F_16** - A woman in a beige dress (Tags: high heels, formal dress, pattern)
+2025-07-07 21:39:22,492 - INFO - [QUERY]  User: user1, Query: 'casual'
+2025-07-07 21:39:27,840 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 suitable casual dress items from your wardrobe:
+
+1. **F_5**: Blue jeans and white shirt - Perfect for a laid-back, everyday casual look.
+2. **F_3**: Blue day dress with pattern - Great for street fashion with a casual vibe.
+3. **F_4**: Green casual dress - Simple and comfortable for a relaxed day out.
+2025-07-07 21:41:46,979 - INFO - [QUERY]  User: user1, Query: 'formal'
+2025-07-07 21:41:52,946 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 suitable dress items for a formal occasion:
+
+1. **F_15** - Grey Dress: A formal dress with sleeves, adding an elegant touch suitable for formal events.
+
+2. **F_16** - Beige Dress: A formal dress with a pattern design, paired with high heels for a polished look.
+
+3. **F_2** - White Dress: A formal dress ideal for a sophisticated and classic appearance.
+2025-07-07 21:51:52,512 - INFO - [QUERY]  User: user2, Query: 'formal'
+2025-07-07 21:52:00,585 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 most suitable formal dress items from your wardrobe:
+
+1. **M_10**: A grey suit with a tie – perfect for a formal occasion.
+2. **M_3**: A black suit – classic and always suitable for formal events.
+3. **M_5**: A suit with a necktie – ideal for a polished and professional look.

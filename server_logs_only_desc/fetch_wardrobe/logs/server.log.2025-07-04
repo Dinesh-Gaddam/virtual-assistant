@@ -1,0 +1,34 @@
+2025-07-04 23:43:21,621 - INFO - [QUERY]  User: user1, Query: 'summer fit'
+2025-07-04 23:43:28,701 - INFO - [RESPONSE] Recommendation generated:
+For a summer fit, here are the top 3 recommended items:
+
+1. **F_14**: Blue dress - It's perfect for a casual day out with its street fashion vibe and pattern design.
+
+2. **F_3**: Blue dress - A casual day dress that's great for keeping cool, complete with sandals for a relaxed summer look.
+
+3. **F_13**: Brown polka dot dress - A casual day dress with sandals, offering a playful yet chic summer style.
+2025-07-04 23:54:19,438 - INFO - [QUERY]  User: user1, Query: 'summerfit'
+2025-07-04 23:54:25,888 - INFO - [RESPONSE] Recommendation generated:
+For a summer fit, here are the top 3 most suitable options:
+
+1. **Item: F_3** - A woman wearing a blue dress
+   - Tags: day dress, casual dress, pattern (fashion design), sandal, blue dress
+   - Perfect for a light and breezy summer outfit.
+
+2. **Item: F_13** - A woman wearing a brown dress
+   - Tags: day dress, polka dot, casual dress, cocktail dress, sandals
+   - Great for a casual summer day with a fun polka dot pattern.
+
+3. **Item: F_14** - A woman wearing a blue dress
+   - Tags: day dress, street fashion, casual dress, pattern (fashion design), handbag, cocktail dress, blue dress
+   - Suitable for a stylish and casual summer look.
+2025-07-04 23:54:25,888 - ERROR - [ERROR] Failed recommendation for user user1: 'item'
+2025-07-04 23:54:25,888 - ERROR - 'item'
+Traceback (most recent call last):
+  File "C:\server_logs_only_desc\fetch_wardrobe\main.py", line 151, in get_recommendation
+    url = df[df["ImageName"] == r["item"]]["ImageURL"].iloc[0]
+                                ~^^^^^^^^
+KeyError: 'item'
+2025-07-04 23:58:32,270 - INFO - [QUERY]  User: user1, Query: 'casual'
+2025-07-04 23:58:37,299 - INFO - [RESPONSE] Recommendation generated:
+2025-07-04 23:58:37,299 - INFO - 3. **F_3**: Blue day dress - Versatile and great for a casual day out.

@@ -1,0 +1,4 @@
+.env
+__pycache__
+imageconfig.json
+server_logs_only_desc/fetch_wardrobe/imageconfig.json
