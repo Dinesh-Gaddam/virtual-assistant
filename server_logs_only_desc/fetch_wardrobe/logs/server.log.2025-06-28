@@ -1,9 +1,0 @@
-2025-06-28 07:48:05,040 - INFO - [QUERY]  User: user2, Query: 'casual'
-2025-06-28 07:48:10,627 - INFO - [RESPONSE] Recommendation generated:
-Here are the top 3 items for a casual look:
-
-1. **Item: M_14** - A casual outfit with jeans, casually worn with a jacket and outerwear.
-  
-2. **Item: M_15** - A beige jacket paired with jeans, providing a relaxed and stylish casual look.
-
-3. **Item: M_23** - A green shirt and blue jeans for a laid-back, casual outfit.
