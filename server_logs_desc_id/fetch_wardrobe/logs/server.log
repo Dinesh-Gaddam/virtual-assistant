@@ -1,0 +1,63 @@
+2025-07-08 10:43:40,439 - INFO - [QUERY]  User: user3, Query: 'casual'
+2025-07-08 10:43:42,173 - ERROR - [ERROR] Failed recommendation for user user3: 'str' object has no attribute 'keys'
+2025-07-08 10:43:42,173 - ERROR - 'str' object has no attribute 'keys'
+Traceback (most recent call last):
+  File "C:\server_logs_only_desc\fetch_wardrobe\main.py", line 124, in get_recommendation
+    "Tags": [list(t.keys())[0] for t in item.get("tags", [])],
+                  ^^^^^^
+AttributeError: 'str' object has no attribute 'keys'
+2025-07-08 10:43:53,881 - INFO - [QUERY]  User: user2, Query: 'casual'
+2025-07-08 10:43:59,328 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 most suitable casual dress items:
+
+1. **Item: M_14** - A man standing with his hands in his pockets; features a jacket, jeans, and casual dress.
+2. **Item: M_15** - A man in a beige jacket; includes a shirt, jeans, and casual dress.
+3. **Item: M_23** - A man in a green shirt and blue jeans; features denim and casual dress.
+2025-07-08 15:55:35,500 - INFO - [QUERY]  User: user1, Query: 'party outfit'
+2025-07-08 15:55:42,016 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 party outfit recommendations:
+
+1. **Blue Dress (F_1):** A chic cocktail dress with high heels, perfect for a stylish evening look.
+
+2. **Red Dress (F_10):** Ideal for a gala or any upscale party, this striking red dress will stand out.
+
+3. **Red Dress (F_17):** A versatile cocktail dress that fits both business casual and party settings.
+2025-07-08 15:56:03,843 - INFO - [QUERY]  User: user2, Query: 'party outfit'
+2025-07-08 15:56:08,068 - INFO - [RESPONSE] Recommendation generated:
+For a party outfit, here are the top 3 most suitable dress items from your wardrobe:
+
+1. **M_9**: A man in a suit and tie - This formal look is sharp and great for upscale or evening parties.
+
+2. **M_10**: A grey suit with a tie - Perfect for both formal and semi-formal events, offering a sophisticated appearance.
+
+3. **M_3**: A man in a black suit - A classic choice that works well for various types of parties, always stylish and elegant.
+2025-07-08 15:56:20,787 - INFO - [QUERY]  User: user1, Query: 'party outfit'
+2025-07-08 15:56:27,003 - INFO - [RESPONSE] Recommendation generated:
+Based on the wardrobe items for a party outfit, here are the top 3 recommendations:
+
+1. **F_1:** A blue cocktail dress with high heels, perfect for a party setting.
+2. **F_10:** A red dress ideal for a gala or festive occasion.
+3. **F_17:** A red cocktail dress with a business casual feel and sheath dress design, great for parties.
+2025-07-08 15:59:40,888 - INFO - [QUERY]  User: user1, Query: 'party outfit'
+2025-07-08 15:59:46,007 - INFO - [RESPONSE] Recommendation generated:
+For a party outfit, here are the top 3 recommendations:
+
+1. **F_1** - Blue Cocktail Dress: Stylish and perfect for a party setting with high heels.
+2. **F_14** - Blue Cocktail Dress: A versatile option suitable for parties with a casual flair.
+3. **F_17** - Red Cocktail Dress: A bold and sophisticated choice with a business casual touch.
+2025-07-08 16:00:01,073 - INFO - [QUERY]  User: user1, Query: 'formal'
+2025-07-08 16:00:09,431 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 most suitable formal dress items:
+
+1. **Item: F_15** - A grey formal dress with sleeves, perfect for formal occasions.
+2. **Item: F_16** - A beige formal dress paired with high heels, ideal for a sophisticated look.
+3. **Item: F_2** - A white formal dress complemented by high heels, great for a chic formal event.
+2025-07-08 16:00:17,409 - INFO - [QUERY]  User: user2, Query: 'formal'
+2025-07-08 16:00:22,385 - INFO - [RESPONSE] Recommendation generated:
+Here are the top 3 most suitable formal dress items from your wardrobe:
+
+1. **M_10**: A grey suit with a tie - Perfect for a formal occasion with its polished appearance.
+
+2. **M_3**: A black suit - Timeless and classic, ideal for any formal event.
+
+3. **M_2**: A man in a suit - Another strong formal option with a white shirt, ensuring a sharp look.

@@ -118,13 +118,15 @@ def get_recommendation(user_id: str, query: str = Query(..., description="Clothi
             logger.error(f"[ERROR] No wardrobe items found for user: {user_id}")
             raise HTTPException(status_code=404, detail="No wardrobe items found")
 
+        # Prepare DataFrame using image IDs only
         df = pd.DataFrame([{
-            "ImageName": item["id"].split("_", 1)[-1],
+            "ImageName": item["id"].split("_", 1)[-1],   # e.g., 'F_1.jpg'
             "Caption": item.get("caption", ""),
             "Tags": [list(t.keys())[0] for t in item.get("tags", [])],
-            "ImageURL": item["image_url"]
+            "BlobName": item["id"]                       # actual blob name
         } for item in wardrobe_items])
 
+        # Run recommendation engine
         engine = RecommenderEngine("imageconfig.json")
         engine.df = df
         recommendation_text = engine.get_dress_recommendation(query)
@@ -136,6 +138,7 @@ def get_recommendation(user_id: str, query: str = Query(..., description="Clothi
         logger.info(f"[RESPONSE] Recommendation generated:\n{recommendation_text.strip()}")
 
         lines = recommendation_text.strip().splitlines()[1:]
+
         results = []
         for line in lines:
             if not line.strip() or ":" not in line:
@@ -148,11 +151,15 @@ def get_recommendation(user_id: str, query: str = Query(..., description="Clothi
 
         response_collection = []
         for r in results:
-            url = df[df["ImageName"] == r["item"]]["ImageURL"].iloc[0]
-            url_match = re.search(rf"{re.escape(r['item'])}\.(jpg|png)", url)
-            image_id = url_match.group(0)
-            image_url = generate_sas_url(user_id, image_id)
-            cleaned_description = re.sub(r"^\d+\.\s*\*\*(?:Item:\s*)?[FM]_\d+\*\*\s*[:\-–]\s*", "", r["description"]).strip()
+            # Find the matching row based on ImageName
+            match_row = df[df["ImageName"] == r["item"]]
+            if match_row.empty:
+                continue
+
+            blob_name = match_row["BlobName"].iloc[0]  # actual image ID = blob name
+            image_url = generate_sas_url(user_id, blob_name)
+
+            cleaned_description = re.sub(r"^\d+\.\s*\*\*(?:Item:\s*)?[FM]_\d+\*\*[:\-–]?\s*", "", r["description"]).strip()
 
 
             response_collection.append({
